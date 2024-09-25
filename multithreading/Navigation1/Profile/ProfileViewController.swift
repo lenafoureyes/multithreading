@@ -14,14 +14,14 @@ class ProfileViewController: UIViewController {
     private let overlayView = UIView()
     private let closeButton = UIButton()
     private var avatarImageView: UIImageView?
-
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
-
+     super.viewDidLoad()
+        
         setupTableView()
         setupOverlayView()
         setupCloseButton()
-
+        
         headerView = ProfileHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 400))
         headerView?.navigationController = self.navigationController
         tableView.tableHeaderView = headerView
@@ -29,6 +29,16 @@ class ProfileViewController: UIViewController {
         headerView?.avatarTapHandler = { [weak self] in
             self?.showAvatarDetail()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        #if DEBUG
+            tableView.backgroundColor = .red
+        #else
+            tableView.backgroundColor = .white
+        #endif
     }
 
     private func setupTableView() {

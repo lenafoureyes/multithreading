@@ -1,0 +1,25 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'Navigation1' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for Navigation1
+  pod 'SnapKit', '~> 5.0.1'
+
+end
+
+target 'StorageService' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for StorageService
+  pod 'SnapKit', '~> 5.0.1'
+
+  target 'StorageServiceTests' do
+    # Pods for testing
+    pod 'SnapKit', '~> 5.0.1'
+  end
+
+end

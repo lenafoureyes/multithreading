@@ -4,8 +4,8 @@
 //
 //  Created by Елена Хайрова on 17.06.2024.
 //
-
 import UIKit
+import SnapKit
 
 class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -17,7 +17,6 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
         imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 75
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -26,7 +25,6 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textColor = .black
         label.text = "Meow_Master"
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -35,7 +33,6 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         label.textColor = .darkGray
         label.text = "mew"
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -50,7 +47,6 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         button.backgroundColor = .blue
         button.setTitleColor(.white, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -61,7 +57,6 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
         label.text = "Photos"
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -72,16 +67,12 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
         super.init(frame: frame)
         setupCollectionView()
         setupViews()
-        setupConstraints()
-        addTapGestureToAvatar()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupCollectionView()
         setupViews()
-        setupConstraints()
-        addTapGestureToAvatar()
     }
     
     private func addTapGestureToAvatar() {
@@ -92,7 +83,6 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
     
     @objc private func avatarTapped() {
         avatarTapHandler?()
-        
     }
     
     private func setupCollectionView() {
@@ -101,13 +91,11 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
         layout.minimumLineSpacing = 10
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(PhotosTableViewCell.self, forCellWithReuseIdentifier: PhotosTableViewCell.reuseIdentifier)
         collectionView.backgroundColor = .white
         collectionView.clipsToBounds = true
-        addSubview(collectionView)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -125,36 +113,43 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
         addSubview(button)
         addSubview(photosLabel)
         addSubview(collectionView)
-    }
-    
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            avatarImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            avatarImageView.widthAnchor.constraint(equalToConstant: 150),
-            avatarImageView.heightAnchor.constraint(equalToConstant: 150),
-            
-            nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 27),
-            nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 34),
-            nameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            
-            descriptionLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 18),
-            descriptionLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 34),
-            descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            
-            button.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 16),
-            button.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            button.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            button.heightAnchor.constraint(equalToConstant: 50),
-            
-            photosLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            photosLabel.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 12),
-            
-            collectionView.topAnchor.constraint(equalTo: photosLabel.bottomAnchor, constant: 12),
-            collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12),
-            collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-        ])
+        
+        avatarImageView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(16)
+            make.width.equalTo(150)
+            make.height.equalTo(150)
+        }
+        
+        nameLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(27)
+            make.leading.equalTo(avatarImageView.snp.trailing).offset(34)
+            make.trailing.equalToSuperview().offset(-16)
+        }
+        
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(18)
+            make.leading.equalTo(avatarImageView.snp.trailing).offset(34)
+            make.trailing.equalToSuperview().offset(-16)
+        }
+        
+        button.snp.makeConstraints { make in
+            make.top.equalTo(avatarImageView.snp.bottom).offset(16)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.equalTo(50)
+        }
+        
+        photosLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(button.snp.bottom).offset(12)
+        }
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(photosLabel.snp.bottom).offset(12)
+            make.leading.equalToSuperview().offset(12)
+            make.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

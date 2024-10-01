@@ -4,8 +4,9 @@
 //
 //  Created by Елена Хайрова on 03.08.2024.
 //
-import StorageService
 import UIKit
+import StorageService
+import iOSIntPackage
 
 class PostTableViewCell: UITableViewCell {
     
@@ -50,6 +51,8 @@ class PostTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    let imageProcessor = ImageProcessor()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -97,8 +100,13 @@ class PostTableViewCell: UITableViewCell {
     func configure(with post: Post) {
         authorLabel.text = post.author
         descriptionLabel.text = post.description
-        postImageView.image = UIImage(named: post.image)
+        if let image = UIImage(named: post.image) {
+            imageProcessor.processImage(sourceImage: image, filter: .sepia(intensity: 1.0), completion: { filteredImage in
+                self.postImageView.image = filteredImage
+            })
+        }
         likesLabel.text = "Likes: \(post.likes)"
         viewsLabel.text = "Views: \(post.views)"
     }
+
 }

@@ -74,6 +74,12 @@ class LogInViewController: UIViewController {
         return separation
     }()
     
+    private var userService: UserService = {
+            let avatarImage = UIImage(named: "cat") ?? UIImage()
+            let user = User(login: "user123", fullName: "Meow Master", avatar: avatarImage, status: "mew")
+            return CurrentUserService(user: user)
+        }()
+    
     private lazy var logButton: UIButton = {
         let button = UIButton()
         button.setTitle("Log in", for: .normal)
@@ -98,15 +104,22 @@ class LogInViewController: UIViewController {
     }()
     
     @objc private func logButtonTapped() {
-        let email = emailTextField.text ?? ""
-        let password = passwordTextField.text ?? ""
-        if email.isEmpty || password.isEmpty {
-            print("Please enter both email and password")
-        } else {
-            let profileViewController = ProfileViewController()
-            self.navigationController?.pushViewController(profileViewController, animated: true)
-        }
-    }
+           let email = emailTextField.text ?? ""
+           let password = passwordTextField.text ?? ""
+
+           if email.isEmpty || password.isEmpty {
+               print("Please enter both email and password")
+               return
+           }
+
+           if let user = userService.getUser (byLogin: email) {
+               let profileViewController = ProfileViewController()
+               profileViewController.user = user
+               self.navigationController?.pushViewController(profileViewController, animated: true)
+           } else {
+               print("Invalid login credentials")
+           }
+       }
     
     @objc private func buttonReleased(_ sender: UIButton) {
         UIView.animate(withDuration: 0.1) {
@@ -140,6 +153,10 @@ class LogInViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+#if DEBUG
+        userService = TestUserService()
+#endif
         self.view.backgroundColor = .white
         
         contentView.addSubview(logoImageView)

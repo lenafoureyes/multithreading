@@ -8,6 +8,8 @@ import StorageService
 import UIKit
 
 class ProfileViewController: UIViewController {
+    
+    var user: User?
 
     private let tableView = UITableView()
     private var headerView: ProfileHeaderView?
@@ -29,6 +31,11 @@ class ProfileViewController: UIViewController {
         headerView?.avatarTapHandler = { [weak self] in
             self?.showAvatarDetail()
         }
+        if let user = user {
+            headerView?.nameLabel.text = user.fullName
+            headerView?.descriptionLabel.text = user.status
+            headerView?.avatarImageView.image = user.avatar }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

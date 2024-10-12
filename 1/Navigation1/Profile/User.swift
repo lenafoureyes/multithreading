@@ -36,3 +36,19 @@ class CurrentUserService: UserService {
     }
 }
 
+class TestUserService: UserService {
+    private var testUser: User
+
+    init() {
+        guard let avatar = UIImage(named: "testAvatar") else {
+            fatalError("Avatar image not found")
+        }
+
+        testUser = User(login: "testUser", fullName: "Test User", avatar: avatar, status: "Testing")
+    }
+
+    func getUser(byLogin login: String) -> User? {
+        // Возвращаем тестового пользователя независимо от введенного логина
+        return testUser
+    }
+}

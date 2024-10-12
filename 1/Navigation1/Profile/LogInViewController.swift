@@ -74,7 +74,7 @@ class LogInViewController: UIViewController {
         return separation
     }()
     
-    private let userService: UserService = {
+    private var userService: UserService = {
             let avatarImage = UIImage(named: "cat") ?? UIImage()
             let user = User(login: "user123", fullName: "Meow Master", avatar: avatarImage, status: "mew")
             return CurrentUserService(user: user)
@@ -153,6 +153,10 @@ class LogInViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+#if DEBUG
+        userService = TestUserService()
+#endif
         self.view.backgroundColor = .white
         
         contentView.addSubview(logoImageView)

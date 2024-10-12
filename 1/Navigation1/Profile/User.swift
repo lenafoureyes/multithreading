@@ -48,7 +48,6 @@ class TestUserService: UserService {
     }
 
     func getUser(byLogin login: String) -> User? {
-        // Возвращаем тестового пользователя независимо от введенного логина
-        return testUser
+        return login == testUser.login ? testUser : nil
     }
 }

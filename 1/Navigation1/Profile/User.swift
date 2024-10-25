@@ -26,15 +26,17 @@ protocol UserService {
 
 class CurrentUserService: UserService {
     private let user: User
-
+    
     init(user: User) {
         self.user = user
     }
-
+    
     func getUser (byLogin login: String) -> User? {
+        print("Comparing with user login: \(user.login)") 
         return login == user.login ? user : nil
     }
 }
+
 
 class TestUserService: UserService {
     private var testUser: User

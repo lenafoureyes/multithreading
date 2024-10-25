@@ -30,6 +30,7 @@
 		31EC5B6D2CA47C4F00AACEA5 /* StorageService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31EC5B582CA47C4E00AACEA5 /* StorageService.framework */; };
 		31EC5B6E2CA47C4F00AACEA5 /* StorageService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 31EC5B582CA47C4E00AACEA5 /* StorageService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		31EC5B762CA47C5B00AACEA5 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BE2B532C5D5A5400165C77 /* Post.swift */; };
+		31F84A142CCA8E5200E8C990 /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F84A132CCA8E5200E8C990 /* Checker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		31EC5B5B2CA47C4E00AACEA5 /* StorageService.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = StorageService.docc; sourceTree = "<group>"; };
 		31EC5B612CA47C4F00AACEA5 /* StorageServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StorageServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		31EC5B682CA47C4F00AACEA5 /* StorageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceTests.swift; sourceTree = "<group>"; };
+		31F84A132CCA8E5200E8C990 /* Checker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +163,7 @@
 				315834FB2C6F9155002B6DD5 /* PhotosTableViewCell.swift */,
 				31C6A0302C6FCD5100DEFA9F /* PhotosCollectionViewCell.swift */,
 				31C6A0322C6FCD8C00DEFA9F /* PhotosViewController.swift */,
+				31F84A132CCA8E5200E8C990 /* Checker.swift */,
 			);
 			path = Navigation1;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				315834FC2C6F9155002B6DD5 /* PhotosTableViewCell.swift in Sources */,
+				31F84A142CCA8E5200E8C990 /* Checker.swift in Sources */,
 				31BE2B5A2C5E9E5600165C77 /* PostTableViewCell.swift in Sources */,
 				3126B84B2C075E260078029A /* PostViewController.swift in Sources */,
 				3126B8372C0759370078029A /* ViewController.swift in Sources */,

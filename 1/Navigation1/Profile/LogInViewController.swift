@@ -9,6 +9,8 @@ import UIKit
 
 class LogInViewController: UIViewController {
     
+    var loginDelegate: LoginViewControllerDelegate?
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -74,6 +76,12 @@ class LogInViewController: UIViewController {
         return separation
     }()
     
+    private var userService: UserService = {
+            let avatarImage = UIImage(named: "cat") ?? UIImage()
+            let user = User(login: "user123", fullName: "Meow Master", avatar: avatarImage, status: "mew")
+            return CurrentUserService(user: user)
+        }()
+    
     private lazy var logButton: UIButton = {
         let button = UIButton()
         button.setTitle("Log in", for: .normal)
@@ -98,15 +106,39 @@ class LogInViewController: UIViewController {
     }()
     
     @objc private func logButtonTapped() {
-        let email = emailTextField.text ?? ""
-        let password = passwordTextField.text ?? ""
-        if email.isEmpty || password.isEmpty {
-            print("Please enter both email and password")
-        } else {
-            let profileViewController = ProfileViewController()
-            self.navigationController?.pushViewController(profileViewController, animated: true)
-        }
+            let email = emailTextField.text ?? ""
+            let password = passwordTextField.text ?? ""
+
+            if email.isEmpty || password.isEmpty {
+                showAlert(message: "Please enter both email and password")
+                return
+            }
+
+            
+            if let isValid = loginDelegate?.check(login: email, password: password) {
+                print("Login check returned: \(isValid)")
+                if isValid {
+                    print("Attempting to retrieve user with login: \(email)")
+                    if let user = userService.getUser (byLogin: email) {
+                        let profileViewController = ProfileViewController()
+                        profileViewController.user = user
+                        self.navigationController?.pushViewController(profileViewController, animated: true)
+                    } else {
+                        print("User  not found")
+                    }
+                } else {
+                    showAlert(message: "Invalid login credentials")
+                }
+            }
+        
     }
+
+
+        private func showAlert(message: String) {
+            let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
     
     @objc private func buttonReleased(_ sender: UIButton) {
         UIView.animate(withDuration: 0.1) {
@@ -140,6 +172,12 @@ class LogInViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("Navigation Controller: \(String(describing: self.navigationController))")
+        
+#if DEBUG
+        userService = TestUserService()
+#endif
         self.view.backgroundColor = .white
         
         contentView.addSubview(logoImageView)

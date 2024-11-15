@@ -7,8 +7,6 @@
 
 import UIKit
 
-import UIKit
-
 class PhotosTableViewCell: UICollectionViewCell {
     static var images: [UIImage] = {
         let imageNames = [

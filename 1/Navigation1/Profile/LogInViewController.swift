@@ -77,10 +77,10 @@ class LogInViewController: UIViewController {
     }()
     
     private var userService: UserService = {
-            let avatarImage = UIImage(named: "cat") ?? UIImage()
-            let user = User(login: "user123", fullName: "Meow Master", avatar: avatarImage, status: "mew")
-            return CurrentUserService(user: user)
-        }()
+        let avatarImage = UIImage(named: "cat") ?? UIImage()
+        let user = User(login: "user123", fullName: "Meow Master", avatar: avatarImage, status: "mew")
+        return CurrentUserService(user: user)
+    }()
     
     private lazy var logButton: UIButton = {
         let button = UIButton()
@@ -106,52 +106,50 @@ class LogInViewController: UIViewController {
     }()
     
     @objc private func logButtonTapped() {
-            let email = emailTextField.text ?? ""
-            let password = passwordTextField.text ?? ""
-
-            if email.isEmpty || password.isEmpty {
-                showAlert(message: "Please enter both email and password")
-                return
-            }
-
-            
-            if let isValid = loginDelegate?.check(login: email, password: password) {
-                print("Login check returned: \(isValid)")
-                if isValid {
-                    print("Attempting to retrieve user with login: \(email)")
-                    if let user = userService.getUser (byLogin: email) {
-                        let profileViewController = ProfileViewController()
-                        profileViewController.user = user
-                        self.navigationController?.pushViewController(profileViewController, animated: true)
-                    } else {
-                        print("User  not found")
-                    }
-                } else {
-                    showAlert(message: "Invalid login credentials")
-                }
-            }
+        let email = emailTextField.text ?? ""
+        let password = passwordTextField.text ?? ""
         
-    }
-
-
-        private func showAlert(message: String) {
-            let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alert, animated: true)
+        if email.isEmpty || password.isEmpty {
+            showAlert(message: "Please enter both email and password")
+            return
         }
+        
+        if let testUserService = userService as? TestUserService, testUserService.checkCredentials(login: email, password: password) {
+            print("Login check returned: true")
+            print("Attempting to retrieve user with login: (email)")
+            
+            if let user = userService.getUser (byLogin: email) {
+                let profileViewController = ProfileViewController()
+                profileViewController.user = user
+                self.navigationController?.pushViewController(profileViewController, animated: true)
+            } else {
+                print("User  not found")
+            }
+        } else {
+            print("Login check returned: false")
+            showAlert(message: "Invalid login credentials")
+        }
+    }
+    
+    
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
     
     @objc private func buttonReleased(_ sender: UIButton) {
         UIView.animate(withDuration: 0.1) {
             sender.alpha = 1.0
         }
     }
-
+    
     @objc private func buttonPressed(_ sender: UIButton) {
         UIView.animate(withDuration: 0.1) {
             sender.alpha = 0.8
         }
     }
-
+    
     @objc private func buttonDisabled(_ sender: UIButton) {
         UIView.animate(withDuration: 0.1) {
             sender.alpha = 0.3
@@ -165,13 +163,16 @@ class LogInViewController: UIViewController {
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
         }
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        let factory = MyLoginFactory()
+        loginDelegate = factory.makeLoginInspector()
+        
         
         print("Navigation Controller: \(String(describing: self.navigationController))")
         
@@ -194,7 +195,7 @@ class LogInViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-            view.addGestureRecognizer(tapGesture)
+        view.addGestureRecognizer(tapGesture)
         
         setupConstraints()
         navigationController?.navigationBar.isHidden = true
@@ -202,8 +203,8 @@ class LogInViewController: UIViewController {
     @objc func hideKeyboard() {
         view.endEditing(true)
     }
-
-private func setupConstraints() {
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -247,3 +248,4 @@ private func setupConstraints() {
         ])
     }
 }
+

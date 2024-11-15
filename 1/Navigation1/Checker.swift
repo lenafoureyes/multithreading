@@ -10,8 +10,8 @@ class Checker {
     
     private let login: String = "user123"
     private let password: String = "password123"
- private init() {}
- func check(login: String, password: String) -> Bool {
+    private init() {}
+    func check(login: String, password: String) -> Bool {
         return self.login == login && self.password == password }
 }
 

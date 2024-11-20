@@ -25,11 +25,6 @@ class PhotosViewController: UIViewController, ImageLibrarySubscriber {
         imagePublisher?.addImagesWithTimer(time: 0.5, repeat: 20, userImages: PhotosTableViewCell.images)
     }
     
-    func receive(images: [UIImage]) {
-        self.images.append(contentsOf: images)
-        collectionView?.reloadData()
-    }
-    
     private func configureView() {
         view.backgroundColor = .white
     }
@@ -94,5 +89,11 @@ extension PhotosViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotosCell", for: indexPath) as! PhotosCollectionViewCell
         cell.imageView.image = images[indexPath.item]
         return cell
+    }
+}
+extension PhotosViewController {
+    func receive(images: [UIImage]) {
+        self.images = images
+        collectionView?.reloadData()
     }
 }

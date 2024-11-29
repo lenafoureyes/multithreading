@@ -38,19 +38,20 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    private lazy var button: UIButton = {
-        let button = UIButton()
-        button.setTitle("Нажми меня", for: .normal)
-        button.layer.cornerRadius = 4
-        button.layer.shadowColor = UIColor.black.cgColor
-        button.layer.shadowOffset = CGSize(width: 4, height: 4)
-        button.layer.shadowRadius = 4
-        button.layer.shadowOpacity = 0.7
-        button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        button.backgroundColor = .blue
-        button.setTitleColor(.white, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
+     
+    private lazy var button: CustomButton = {
+        let button = CustomButton(title: "Нажми меня",
+                                  titleColor: .white,
+                                  backgroundColor: .blue,
+                                  cornerRadius: 4,
+                                  useAutoLayout: false,
+                                  shadowColor: UIColor.black.cgColor,
+                                  shadowOffset: CGSize(width: 4, height: 4),
+                                  shadowRadius: 4,
+                                  shadowOpacity: 0.7)
+        button.action = { [weak self] in
+            self?.buttonPressed()
+        }
         return button
     }()
     

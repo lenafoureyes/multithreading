@@ -95,8 +95,6 @@ class ProfileViewController: UIViewController {
         guard let headerView = headerView else { return }
         let avatarImageView = headerView.avatarImageView
 
-
-        // Удаляем аватар из headerView и добавляем его в основной view
         avatarImageView.removeFromSuperview()
         view.addSubview(avatarImageView)
         avatarImageView.translatesAutoresizingMaskIntoConstraints = true
@@ -121,15 +119,12 @@ class ProfileViewController: UIViewController {
         let avatarImageView = headerView.avatarImageView
         
         UIView.animate(withDuration: 0.3, animations: {
-            // Hide close button
             self.closeButton.alpha = 0.0
         }) { _ in
             UIView.animate(withDuration: 0.5, animations: {
-                // Resize avatar back to original
                 avatarImageView.frame = CGRect(x: 16, y: 16, width: 150, height: 150)
                 avatarImageView.layer.cornerRadius = 75
                 
-                // Hide overlay view
                 self.overlayView.isHidden = true
             })
         }

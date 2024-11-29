@@ -82,27 +82,30 @@ class LogInViewController: UIViewController {
         return CurrentUserService(user: user)
     }()
     
-    private lazy var logButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Log in", for: .normal)
-        button.layer.cornerRadius = 10
-        button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
-        button.setTitleColor(.white, for: .normal)
-        
+    private lazy var logButton: CustomButton = {
+        let button = CustomButton(title: "Log in",
+                                  titleColor: .white,
+                                  cornerRadius: 10,
+                                  useAutoLayout: false,
+                                  font: .systemFont(ofSize: 18,weight: .semibold),
+                                  masksToBounds: true)
         if let blueImage = UIImage(named: "blue.png") {
             button.setBackgroundImage(blueImage, for: .normal)
         } else {
             print("Ошибка загрузки изображения 'blue.png'")
         }
+        
         button.alpha = 1.0
-        button.translatesAutoresizingMaskIntoConstraints = false
+        button.action = { [weak self] in
+            self?.logButtonTapped()
+        }
+        
         button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchDown)
         button.addTarget(self, action: #selector(buttonReleased(_:)), for: [.touchUpInside, .touchUpOutside, .touchCancel])
         button.addTarget(self, action: #selector(buttonDisabled(_:)), for: .touchDragExit)
-        button.addTarget(self, action: #selector(logButtonTapped), for: .touchUpInside)
         
         return button
+        
     }()
     
     @objc private func logButtonTapped() {

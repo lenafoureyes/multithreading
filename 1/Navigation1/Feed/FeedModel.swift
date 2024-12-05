@@ -13,8 +13,7 @@ class FeedModel {
         self.secretWord = secretWord
     }
 
-    func check(word: String) {
-        let isCorrect = word == secretWord
-        NotificationCenter.default.post(name: Notification.Name("GuessResult"), object: nil, userInfo: ["isCorrect": isCorrect])
+    func check(word: String) -> Bool {
+        return word == secretWord 
     }
 }

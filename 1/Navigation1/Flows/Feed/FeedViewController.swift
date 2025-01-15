@@ -10,6 +10,7 @@ import UIKit
 class FeedViewController: UIViewController {
 
     var viewModel: FeedViewModel!
+    var coordinator: FeedBaseCoordinator? // Добавлен координатор
 
     lazy var checkGuessButton: CustomButton = {
         let button = CustomButton(title: "Проверить",

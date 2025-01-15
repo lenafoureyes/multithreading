@@ -6,8 +6,10 @@
 //
 
 import UIKit
-
-typealias Action = (() -> Void)
+enum AppFlow {
+    case profile
+    case feed
+}
 
 protocol FlowCoordinator: AnyObject {
     var parentCoordinator: MainBaseCoordinator? { get set }
@@ -21,22 +23,13 @@ protocol Coordinator: FlowCoordinator {
 
 extension Coordinator {
     var navigationRootViewController: UINavigationController? {
-        get {
-            (rootViewController as? UINavigationController)
-        }
+        return rootViewController as? UINavigationController
     }
-    func resetToRoot() -> Self {
+
+    @discardableResult func resetToRoot() -> Self {
         navigationRootViewController?.popToRootViewController(animated: false)
         return self
     }
-}
-
-protocol ProfileBaseCoordinator: Coordinator {
-    
-}
-
-protocol FeedBaseCoordinator: Coordinator {
-    
 }
 
 protocol MainBaseCoordinator: Coordinator {
@@ -44,4 +37,3 @@ protocol MainBaseCoordinator: Coordinator {
     var feedCoordinator: FeedBaseCoordinator { get }
     func moveTo(flow: AppFlow)
 }
-    

@@ -40,7 +40,7 @@ class CurrentUserService: UserService {
 
 class TestUserService: UserService {
     private var testUser: User
-    private let testPassword = "password123"
+    private let testPassword = "123"
     
     init() {
         guard let avatar = UIImage(named: "testAvatar") else {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		311844452D8DC25E00022144 /* PasswordBruteForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311844442D8DC25E00022144 /* PasswordBruteForce.swift */; };
 		3126B8332C0759370078029A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3126B8322C0759370078029A /* AppDelegate.swift */; };
 		3126B8352C0759370078029A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3126B8342C0759370078029A /* SceneDelegate.swift */; };
 		3126B8372C0759370078029A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3126B8362C0759370078029A /* ViewController.swift */; };
@@ -80,6 +81,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		311844442D8DC25E00022144 /* PasswordBruteForce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordBruteForce.swift; sourceTree = "<group>"; };
 		3126B82F2C0759370078029A /* Navigation1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigation1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3126B8322C0759370078029A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3126B8342C0759370078029A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 				3149F5472C52D593005FA37B /* LogInViewController.swift */,
 				31F84A132CCA8E5200E8C990 /* Checker.swift */,
 				317E34482CBAF17400E6B699 /* User.swift */,
+				311844442D8DC25E00022144 /* PasswordBruteForce.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -410,6 +413,7 @@
 				318CB92D2CEE5C03004325EA /* CustomButton.swift in Sources */,
 				3126B8372C0759370078029A /* ViewController.swift in Sources */,
 				31C6A0312C6FCD5100DEFA9F /* PhotosCollectionViewCell.swift in Sources */,
+				311844452D8DC25E00022144 /* PasswordBruteForce.swift in Sources */,
 				316B7C9F2CFB8CD7005393D2 /* FeedViewModel.swift in Sources */,
 				3149F5482C52D593005FA37B /* LogInViewController.swift in Sources */,
 				317E34492CBAF17400E6B699 /* User.swift in Sources */,

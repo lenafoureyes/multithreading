@@ -11,6 +11,20 @@ class LogInViewController: UIViewController {
     
     var loginDelegate: LoginViewControllerDelegate?
     
+    private let bruteForceButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Подобрать пароль", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -176,6 +190,8 @@ class LogInViewController: UIViewController {
         let factory = MyLoginFactory()
         loginDelegate = factory.makeLoginInspector()
         
+        bruteForceButton.addTarget(self, action: #selector(bruteForceButtonTapped), for: .touchUpInside)
+        
         
         print("Navigation Controller: \(String(describing: self.navigationController))")
         
@@ -188,6 +204,8 @@ class LogInViewController: UIViewController {
         contentView.addSubview(inputStackView)
         contentView.addSubview(separatorView)
         contentView.addSubview(logButton)
+        contentView.addSubview(bruteForceButton)
+        contentView.addSubview(activityIndicator)
         
         inputStackView.addArrangedSubview(emailTextField)
         inputStackView.addArrangedSubview(passwordTextField)
@@ -203,6 +221,28 @@ class LogInViewController: UIViewController {
         setupConstraints()
         navigationController?.navigationBar.isHidden = true
     }
+    
+    @objc private func bruteForceButtonTapped() {
+        print("Кнопка 'Подобрать пароль' нажата")
+        let randomPassword = generateRandomPassword(length: 3)
+        print("Сгенерированный пароль: \(randomPassword)")
+        passwordTextField.text = randomPassword
+        passwordTextField.isSecureTextEntry = true
+        activityIndicator.startAnimating()
+        
+        let bruteForce = PasswordBruteForce()
+        bruteForce.bruteForce(passwordToUnlock: randomPassword) { [weak self] password in
+            print("Пароль подобран: \(password)")
+            self?.passwordTextField.isSecureTextEntry = false
+            self?.activityIndicator.stopAnimating()
+            self?.passwordTextField.text = password
+        }
+    }
+    
+        private func generateRandomPassword(length: Int) -> String {
+            let characters = String().printable
+            return String((0..<length).map { _ in characters.randomElement()! })
+        }
     @objc func hideKeyboard() {
         view.endEditing(true)
     }
@@ -247,7 +287,14 @@ class LogInViewController: UIViewController {
             logButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logButton.heightAnchor.constraint(equalToConstant: 50),
-            logButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+            logButton.bottomAnchor.constraint(equalTo: bruteForceButton.topAnchor, constant: -20),
+            
+            bruteForceButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            bruteForceButton.topAnchor.constraint(equalTo: logButton.bottomAnchor, constant: 20),
+            bruteForceButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            
+            activityIndicator.topAnchor.constraint(equalTo: bruteForceButton.bottomAnchor, constant: 10),
+            activityIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
     }
 }

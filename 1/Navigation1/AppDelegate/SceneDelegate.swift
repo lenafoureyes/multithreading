@@ -18,9 +18,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         mainCoordinator = MainCoordinator()
-
         window?.rootViewController = mainCoordinator?.start()
         window?.makeKeyAndVisible()
+
+        performRandomAPIRequest()
+    }
+
+    private func performRandomAPIRequest() {
+        let randomConfig: AppConfiguration = {
+            let randomId = Int.random(in: 1...10)
+            switch Int.random(in: 0...2) {
+            case 0: return .post(randomId)
+            case 1: return .user(randomId)
+            case 2: return .photo(randomId)
+            default: return .post(1)
+            }
+        }()
+
+        print("Selected API configuration: \(randomConfig)")
+        NetworkService.request(for: randomConfig)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

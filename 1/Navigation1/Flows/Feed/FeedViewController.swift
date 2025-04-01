@@ -9,7 +9,6 @@ import AVFoundation
 
 class FeedViewController: UIViewController {
     
-    // MARK: - Audio Player Properties
     var player: AVAudioPlayer?
         var currentTrackIndex = 0
         let tracks = [
@@ -20,11 +19,9 @@ class FeedViewController: UIViewController {
             ("BREATH", "mp3")
         ]
     
-    // MARK: - Existing Properties
     var viewModel: FeedViewModel!
     var coordinator: FeedBaseCoordinator?
     
-    // MARK: - UI Components
     lazy var playPauseButton: CustomButton = {
         let button = CustomButton(title: "Play",
                                  titleColor: .white,
@@ -159,7 +156,6 @@ class FeedViewController: UIViewController {
         return button
     }()
     
-    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -171,7 +167,6 @@ class FeedViewController: UIViewController {
         setupConstraints()
     }
     
-    // MARK: - Audio Player Setup
     private func setupAudioPlayer() {
         guard currentTrackIndex >= 0 && currentTrackIndex < tracks.count else { return }
         let track = tracks[currentTrackIndex]
@@ -190,7 +185,6 @@ class FeedViewController: UIViewController {
         }
     }
     
-    // MARK: - Audio Controls
     private func togglePlayPause() {
         guard let player = player else { return }
         
@@ -232,17 +226,13 @@ class FeedViewController: UIViewController {
         trackNameLabel.text = tracks[currentTrackIndex].0
     }
     
-    // MARK: - UI Setup
     private func setupUI() {
-        // Добавляем существующие компоненты
         view.addSubview(textField)
         view.addSubview(checkGuessButton)
         view.addSubview(resultLabel)
         view.addSubview(stackView)
         stackView.addArrangedSubview(button1)
         stackView.addArrangedSubview(button2)
-        
-        // Добавляем новые компоненты для плеера
         view.addSubview(playerStack)
         view.addSubview(trackNameLabel)
     }
@@ -286,7 +276,6 @@ class FeedViewController: UIViewController {
         ])
     }
     
-    // MARK: - Post Actions
     struct Post {
         var title: String
     }
@@ -297,7 +286,6 @@ class FeedViewController: UIViewController {
         self.navigationController?.pushViewController(postViewController, animated: true)
     }
     
-    // MARK: - Guess Check
     @objc func checkGuess() {
         viewModel.checkGuess(word: textField.text ?? "")
         updateResultLabel()

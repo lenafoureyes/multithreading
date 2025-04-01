@@ -18,7 +18,7 @@ class ProfileViewController: UIViewController {
     private var avatarImageView: UIImageView?
     
     private var inactivityTimer: Timer?
-    private let inactivityTimeout: TimeInterval = 10 // 5 минут в секундах
+    private let inactivityTimeout: TimeInterval = 10
     
     
     override func viewDidLoad() {
@@ -86,7 +86,7 @@ class ProfileViewController: UIViewController {
         // Возвращаемся на корневой контроллер (экран логина)
         navigationController?.popToRootViewController(animated: true)
         
-        // Можно показать алерт
+        // алерт
         let alert = UIAlertController(
             title: "Сессия завершена",
             message: "Вы были автоматически вышли из системы из-за неактивности",

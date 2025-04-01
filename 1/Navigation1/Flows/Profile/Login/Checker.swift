@@ -26,7 +26,7 @@ enum LoginError: Error {
 class Checker {
     static let shared = Checker()
     
-    private let validLogin: String = "testUser" // Изменено на testUser
+    private let validLogin: String = "testUser"
     private let validPassword: String = "123"
     private var attemptCount = 0
     private let maxAttempts = 3

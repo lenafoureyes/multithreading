@@ -8,7 +8,6 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
     var mainCoordinator: MainCoordinator?
 
@@ -16,7 +15,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
 
         window = UIWindow(windowScene: windowScene)
-        
         mainCoordinator = MainCoordinator()
         window?.rootViewController = mainCoordinator?.start()
         window?.makeKeyAndVisible()
@@ -36,9 +34,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }()
 
         print("Selected API configuration: \(randomConfig)")
-        NetworkService.request(for: randomConfig)
+        
+        Task {
+            do {
+                guard let url = randomConfig.url else {
+                    print("Invalid URL for configuration: \(randomConfig)")
+                    return
+                }
+                
+                let (data, response) = try await NetworkService.request(url: url)
+                print("Status code: \(response.statusCode)")
+                print("Data: \(String(decoding: data, as: UTF8.self))")
+            } catch {
+                print("API request failed: \(error.localizedDescription)")
+            }
+        }
     }
-
+}
     func sceneDidDisconnect(_ scene: UIScene) {
         // Код для освобождения ресурсов
     }
@@ -58,4 +70,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Код для сохранения данных и освобождения ресурсов
     }
-}
+

@@ -23,6 +23,7 @@
 		316B7C9F2CFB8CD7005393D2 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316B7C9E2CFB8CD7005393D2 /* FeedViewModel.swift */; };
 		317E34492CBAF17400E6B699 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317E34482CBAF17400E6B699 /* User.swift */; };
 		3183AD562D9C41E500FB36FD /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3183AD552D9C41E500FB36FD /* NetworkService.swift */; };
+		3183AD582DA19F1900FB36FD /* PostJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3183AD572DA19F1900FB36FD /* PostJSON.swift */; };
 		3186FC1F2D986B1200149279 /* vielleicht.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3186FC1E2D986B1200149279 /* vielleicht.mp3 */; };
 		3186FC212D986D9B00149279 /* aura.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3186FC202D986D9B00149279 /* aura.mp3 */; };
 		3186FC232D986DA500149279 /* BREATH.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3186FC222D986DA500149279 /* BREATH.mp3 */; };
@@ -104,6 +105,7 @@
 		316B7C9E2CFB8CD7005393D2 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		317E34482CBAF17400E6B699 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		3183AD552D9C41E500FB36FD /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		3183AD572DA19F1900FB36FD /* PostJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostJSON.swift; sourceTree = "<group>"; };
 		3186FC1E2D986B1200149279 /* vielleicht.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = vielleicht.mp3; sourceTree = "<group>"; };
 		3186FC202D986D9B00149279 /* aura.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = aura.mp3; sourceTree = "<group>"; };
 		3186FC222D986DA500149279 /* BREATH.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BREATH.mp3; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				312D95402CF9322C0092DE01 /* FeedModel.swift */,
 				316B7C9E2CFB8CD7005393D2 /* FeedViewModel.swift */,
 				3126B84A2C075E260078029A /* PostViewController.swift */,
+				3183AD572DA19F1900FB36FD /* PostJSON.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				315834FC2C6F9155002B6DD5 /* PhotosTableViewCell.swift in Sources */,
 				31C8A7822D1085DF0047CDE2 /* ProfileCoordinator.swift in Sources */,
 				3183AD562D9C41E500FB36FD /* NetworkService.swift in Sources */,
+				3183AD582DA19F1900FB36FD /* PostJSON.swift in Sources */,
 				31F84A142CCA8E5200E8C990 /* Checker.swift in Sources */,
 				312D95412CF9322C0092DE01 /* FeedModel.swift in Sources */,
 				31BE2B5A2C5E9E5600165C77 /* PostTableViewCell.swift in Sources */,

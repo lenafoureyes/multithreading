@@ -19,6 +19,13 @@ class FileManagerModel {
         do {
             let files = try FileManager.default.contentsOfDirectory(atPath: documentsDirectory.path)
             imageNames = files.filter { $0.hasSuffix(".jpg") || $0.hasSuffix(".png") }
+            
+            let defaults = UserDefaults.standard
+            if defaults.bool(forKey: "sortingEnabled") {
+                imageNames.sort()
+            } else {
+                imageNames.sort(by: >) 
+            }
         } catch {
             print("Error loading images: \(error.localizedDescription)")
         }

@@ -8,13 +8,22 @@
 import UIKit
 
 class ViewController: UITableViewController {
-    private let fileManager = FileManagerModel()
+    var fileManager: FileManagerModel! {
+        didSet {
+            fileManager.loadImages()
+        }
+    }
+    
     private let imagePicker = UIImagePickerController()
+    private var isSortingEnabled: Bool {
+        return UserDefaults.standard.bool(forKey: "sortingEnabled")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("View did load called")
         setupUI()
+        setupNotifications()
         view.backgroundColor = .white
         print("Loaded images count: \(fileManager.imageNames.count)")
     }
@@ -31,6 +40,20 @@ class ViewController: UITableViewController {
         tableView.register(ImageCell.self, forCellReuseIdentifier: "ImageCell")
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
+    }
+    
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(sortingSettingsChanged),
+            name: .sortingSettingsChanged,
+            object: nil
+        )
+    }
+    
+    @objc private func sortingSettingsChanged() {
+        fileManager.loadImages()
+        tableView.reloadData()
     }
     
     @objc private func addPhotoTapped() {

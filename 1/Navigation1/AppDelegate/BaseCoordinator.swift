@@ -9,6 +9,7 @@ import UIKit
 enum AppFlow {
     case profile
     case feed
+    case favorites
 }
 
 protocol FlowCoordinator: AnyObject {
@@ -35,5 +36,6 @@ extension Coordinator {
 protocol MainBaseCoordinator: Coordinator {
     var profileCoordinator: ProfileBaseCoordinator { get }
     var feedCoordinator: FeedBaseCoordinator { get }
+    var favoritesCoordinator: FavoritesBaseCoordinator { get }
     func moveTo(flow: AppFlow)
 }

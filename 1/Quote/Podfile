@@ -1,0 +1,9 @@
+
+platform :ios, '13.0'
+
+target 'Quote' do
+  use_frameworks!
+  
+  pod 'Alamofire', '~> 5.8.1'
+  pod 'RealmSwift', '~> 10.44.0'
+end

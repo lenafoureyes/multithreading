@@ -276,13 +276,13 @@ class FeedViewController: UIViewController {
         ])
     }
     
-    struct Post {
+    struct Post1 {
         var title: String
     }
     
     @objc func buttonAction(_ sender: UIButton) {
         let postViewController = PostViewController()
-        postViewController.post = Post(title: sender.currentTitle ?? "Пост")
+        postViewController.post = Post1(title: sender.currentTitle ?? "Пост")
         self.navigationController?.pushViewController(postViewController, animated: true)
     }
     

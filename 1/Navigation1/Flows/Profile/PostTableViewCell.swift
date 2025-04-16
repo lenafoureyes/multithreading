@@ -51,15 +51,49 @@ class PostTableViewCell: UITableViewCell {
         return label
     }()
     
+    private var doubleTapGesture: UITapGestureRecognizer!
+        var onDoubleTap: (() -> Void)?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViews()
-        setupConstraints()
-    }
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+            setupViews()
+            setupConstraints()
+            setupGestures()
+        }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private func setupGestures() {
+            doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
+            doubleTapGesture.numberOfTapsRequired = 2
+            contentView.addGestureRecognizer(doubleTapGesture)
+        }
+    @objc private func handleDoubleTap() {
+           onDoubleTap?()
+           
+           // Анимация "лайка"
+           let heartImageView = UIImageView(image: UIImage(systemName: "heart.fill"))
+           heartImageView.tintColor = .red
+           heartImageView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
+           heartImageView.center = contentView.center
+           heartImageView.alpha = 0
+           heartImageView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+           contentView.addSubview(heartImageView)
+           
+           UIView.animate(withDuration: 0.3, animations: {
+               heartImageView.alpha = 1
+               heartImageView.transform = .identity
+           }) { _ in
+               UIView.animate(withDuration: 0.3, delay: 0.2, options: [], animations: {
+                   heartImageView.alpha = 0
+                   heartImageView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+               }) { _ in
+                   heartImageView.removeFromSuperview()
+               }
+           }
+       }
     
     private func setupViews() {
         contentView.addSubview(authorLabel)

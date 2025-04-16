@@ -4,84 +4,113 @@
 //
 //  Created by Елена Хайрова on 16.04.2025.
 //
-
-import CoreData
 import UIKit
 import StorageService
+import CoreData
 
 class CoreDataManager {
     static let shared = CoreDataManager()
     
     private init() {}
     
+    // MARK: - Core Data Stack (Optimized)
+    
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "DataModel")
-        container.loadPersistentStores { _, error in
+        
+        // Оптимизация: предварительная загрузка хранилища
+        container.loadPersistentStores { [weak self] storeDescription, error in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
+            
+            // Оптимизация: настройка автоматического слияния изменений
+            container.viewContext.automaticallyMergesChangesFromParent = true
         }
+        
         return container
     }()
     
-    var context: NSManagedObjectContext {
+    // Основной контекст (UI)
+    var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
     
-    func saveContext() {
-        if context.hasChanges {
+    // Фоновый контекст для операций записи
+    private lazy var backgroundContext: NSManagedObjectContext = {
+        let context = persistentContainer.newBackgroundContext()
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        return context
+    }()
+    
+    // MARK: - CRUD Operations
+    
+    func savePost(_ post: Post, completion: @escaping () -> Void) {
+        backgroundContext.perform { [weak self] in
+            let favoritePost = FavoritePost(context: self?.backgroundContext ?? NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType))
+            favoritePost.author = post.author
+            favoritePost.postDescription = post.description
+            favoritePost.imageName = post.image
+            favoritePost.likes = Int32(post.likes)
+            favoritePost.views = Int32(post.views)
+            favoritePost.createdAt = Date()
+            
             do {
-                try context.save()
+                try self?.backgroundContext.save()
+                DispatchQueue.main.async {
+                    completion()
+                }
             } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                print("Failed to save post: \(error)")
             }
         }
     }
     
-    // MARK: - Favorite Posts CRUD
-    
-    func savePost(_ post: Post) {
-        let favoritePost = FavoritePost(context: context)
-        favoritePost.author = post.author
-        favoritePost.postDescription = post.description
-        favoritePost.imageName = post.image
-        favoritePost.likes = Int32(post.likes)
-        favoritePost.views = Int32(post.views)
-        favoritePost.createdAt = Date()
-        
-        saveContext()
-    }
-    
-    func fetchPosts() -> [Post] {
+    func fetchPosts(completion: @escaping ([Post]) -> Void) {
         let fetchRequest: NSFetchRequest<FavoritePost> = FavoritePost.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: false)]
         
-        do {
-            let favoritePosts = try context.fetch(fetchRequest)
-            return favoritePosts.map {
-                Post(author: $0.author ?? "",
-                     description: $0.postDescription ?? "",
-                     image: $0.imageName ?? "",
-                     likes: Int($0.likes),
-                     views: Int($0.views))
+        // Оптимизация: пакетное получение
+        fetchRequest.fetchBatchSize = 20
+        
+        backgroundContext.perform {
+            do {
+                let favoritePosts = try self.backgroundContext.fetch(fetchRequest)
+                let posts = favoritePosts.map {
+                    Post(author: $0.author ?? "",
+                         description: $0.postDescription ?? "",
+                         image: $0.imageName ?? "",
+                         likes: Int($0.likes),
+                         views: Int($0.views))
+                }
+                DispatchQueue.main.async {
+                    completion(posts)
+                }
+            } catch {
+                print("Error fetching posts: \(error)")
+                DispatchQueue.main.async {
+                    completion([])
+                }
             }
-        } catch {
-            print("Error fetching posts: \(error)")
-            return []
         }
     }
     
-    func deletePost(_ post: Post) {
-        let fetchRequest: NSFetchRequest<FavoritePost> = FavoritePost.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "author == %@ AND postDescription == %@", post.author, post.description)
-        
-        do {
-            let posts = try context.fetch(fetchRequest)
-            posts.forEach { context.delete($0) }
-            saveContext()
-        } catch {
-            print("Error deleting post: \(error)")
+    func deletePost(_ post: Post, completion: @escaping () -> Void) {
+        backgroundContext.perform { [weak self] in
+            let fetchRequest: NSFetchRequest<FavoritePost> = FavoritePost.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "author == %@ AND postDescription == %@",
+                                               post.author, post.description)
+            
+            do {
+                let posts = try self?.backgroundContext.fetch(fetchRequest) ?? []
+                posts.forEach { self?.backgroundContext.delete($0) }
+                try self?.backgroundContext.save()
+                DispatchQueue.main.async {
+                    completion()
+                }
+            } catch {
+                print("Error deleting post: \(error)")
+            }
         }
     }
 }

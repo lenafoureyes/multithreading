@@ -206,15 +206,18 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.onDoubleTap = { [weak self] in
             guard let self = self else { return }
-            CoreDataManager.shared.savePost(post)
             
-            let alert = UIAlertController(
-                title: "Сохранено",
-                message: "Пост добавлен в избранное",
-                preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(alert, animated: true)
+            CoreDataManager.shared.savePost(post) { [weak self] in
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(
+                        title: "Сохранено",
+                        message: "Пост добавлен в избранное",
+                        preferredStyle: .alert
+                    )
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self?.present(alert, animated: true)
+                }
+            }
         }
         
         return cell

@@ -18,7 +18,7 @@ class ProfileViewController: UIViewController {
     private var avatarImageView: UIImageView?
     
     private var inactivityTimer: Timer?
-    private let inactivityTimeout: TimeInterval = 10
+    private let inactivityTimeout: TimeInterval = 100
     
     
     override func viewDidLoad() {
@@ -194,15 +194,34 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
         let post = posts[indexPath.row]
         cell.configure(with: post)
+        
+        cell.onDoubleTap = { [weak self] in
+            guard let self = self else { return }
+            
+            CoreDataManager.shared.savePost(post) { [weak self] success in
+                DispatchQueue.main.async {
+                    guard let self = self else { return }
+                    
+                    let alert = UIAlertController(
+                        title: "Сохранено",
+                        message: "Пост добавлен в избранное",
+                        preferredStyle: .alert
+                    )
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(alert, animated: true)
+                }
+            }
+        }
+        
         return cell
     }
 }
@@ -210,13 +229,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 extension ProfileViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let headerView = headerView else { return }
-
         let offsetY = scrollView.contentOffset.y
-
-        if offsetY > 0 {
-            headerView.frame.origin.y = -offsetY
-        } else {
-            headerView.frame.origin.y = 0
-        }
+        headerView.frame.origin.y = offsetY > 0 ? -offsetY : 0
     }
 }

@@ -11,7 +11,7 @@ class PostViewController: UIViewController {
     
     let myButtom = UIBarButtonItem(barButtonSystemItem: .action, target: PostViewController.self, action: #selector(look))
     
-    var post: FeedViewController.Post?
+    var post: FeedViewController.Post1?
 
     override func viewDidLoad() {
         super.viewDidLoad()

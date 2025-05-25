@@ -34,13 +34,13 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         label.textColor = .darkGray
-        label.text = "mew"
+        label.text = NSLocalizedString("description", comment: "description label")
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
      
     private lazy var button: CustomButton = {
-        let button = CustomButton(title: "Нажми меня",
+        let button = CustomButton(title: NSLocalizedString("button.push", comment: "button description print"),
                                   titleColor: .white,
                                   backgroundColor: .blue,
                                   cornerRadius: 4,
@@ -59,7 +59,7 @@ class ProfileHeaderView: UIView, UICollectionViewDataSource, UICollectionViewDel
     
     let photosLabel: UILabel = {
         let label = UILabel()
-        label.text = "Photos"
+        label.text = NSLocalizedString("photos.label", comment: "")
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 24)
         label.translatesAutoresizingMaskIntoConstraints = false

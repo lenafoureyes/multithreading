@@ -9,7 +9,7 @@ import UIKit
 
 class InfoViewController: UIViewController {
     lazy var button: CustomButton = {
-        let button = CustomButton(title: "удалить",
+        let button = CustomButton(title: NSLocalizedString("delete.button.title", comment: "Delete button title"),
                                   titleColor: .black,
                                   backgroundColor: .gray,
                                   frame: CGRect(x: 50, y: 250, width: 80, height: 50),
@@ -31,12 +31,14 @@ class InfoViewController: UIViewController {
     }
     
     @objc func buttonUpgrade() {
-        let alert = UIAlertController(title: "вы уверенны ?", message: "Are you sure?", preferredStyle: .alert)
+        let alert = UIAlertController(title: NSLocalizedString("alert.confirm.title", comment: "Confirmation title"),
+                                     message: NSLocalizedString("alert.confirm.message", comment: "Confirmation message"),
+                                     preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("alert.yes", comment: "Yes button"), style: .default, handler: { action in
             print("ok")
         }))
-        alert.addAction(UIAlertAction(title: "Нет", style: .cancel, handler: { action in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("alert.no", comment: "No button"), style: .cancel, handler: { action in
             print("ok!")
         }))
         self.present(alert, animated: true)

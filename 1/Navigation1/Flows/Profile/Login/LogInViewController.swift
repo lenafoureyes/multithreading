@@ -33,7 +33,7 @@ class LogInViewController: UIViewController {
     let emailTextField: UITextField = {
         let emailText = UITextField()
         emailText.placeholder = "Email or phone"
-        emailText.textColor = .black
+        emailText.textColor = .appText
         emailText.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         emailText.autocapitalizationType = .none
         emailText.keyboardType = UIKeyboardType.default
@@ -46,7 +46,7 @@ class LogInViewController: UIViewController {
     let passwordTextField: UITextField = {
         let passwordText = UITextField()
         passwordText.placeholder = "Password"
-        passwordText.textColor = .black
+        passwordText.textColor = .appText
         passwordText.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         passwordText.autocapitalizationType = .none
         passwordText.keyboardType = UIKeyboardType.default
@@ -59,7 +59,7 @@ class LogInViewController: UIViewController {
     
     let inputStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.backgroundColor = .systemGray6
+        stackView.backgroundColor = .appBackground
         stackView.layer.cornerRadius = 10
         stackView.layer.borderWidth = 0.5
         stackView.axis = .vertical
@@ -71,7 +71,7 @@ class LogInViewController: UIViewController {
     
     let separatorView: UIView = {
         let separation = UIView()
-        separation.backgroundColor = .lightGray
+        separation.backgroundColor = .appCellBackground
         separation.translatesAutoresizingMaskIntoConstraints = false
         return separation
     }()
@@ -84,7 +84,7 @@ class LogInViewController: UIViewController {
     
     private lazy var logButton: CustomButton = {
         let button = CustomButton(title: "Log in",
-                                  titleColor: .white,
+                                  titleColor: .appText,
                                   cornerRadius: 10,
                                   useAutoLayout: false,
                                   font: .systemFont(ofSize: 18,weight: .semibold),
@@ -182,7 +182,7 @@ class LogInViewController: UIViewController {
 #if DEBUG
         userService = TestUserService()
 #endif
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .appBackground
         
         contentView.addSubview(logoImageView)
         contentView.addSubview(inputStackView)

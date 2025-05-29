@@ -26,13 +26,14 @@ class PhotosViewController: UIViewController, ImageLibrarySubscriber {
     }
     
     private func configureView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .appBackground
     }
     
     private func setupTitleLabel() {
         let titleLabel = UILabel()
         titleLabel.text = "Photo Gallery"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        titleLabel.textColor = .appText
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(titleLabel)
@@ -53,7 +54,7 @@ class PhotosViewController: UIViewController, ImageLibrarySubscriber {
         collectionView?.delegate = self
         collectionView?.dataSource = self
         collectionView?.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: "PhotosCell")
-        collectionView?.backgroundColor = .white
+        collectionView?.backgroundColor = .appBackground
         collectionView?.translatesAutoresizingMaskIntoConstraints = false
         if let collectionView = collectionView {
             view.addSubview(collectionView)

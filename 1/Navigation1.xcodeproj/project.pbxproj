@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		312365222DE8B25D005B85F5 /* Dark:Light.swift in Sources */ = {isa = PBXBuildFile; fileRef = 312365212DE8B25D005B85F5 /* Dark:Light.swift */; };
 		3126B8332C0759370078029A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3126B8322C0759370078029A /* AppDelegate.swift */; };
 		3126B8352C0759370078029A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3126B8342C0759370078029A /* SceneDelegate.swift */; };
 		3126B8372C0759370078029A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3126B8362C0759370078029A /* ViewController.swift */; };
@@ -80,6 +81,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		312365212DE8B25D005B85F5 /* Dark:Light.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dark:Light.swift"; sourceTree = "<group>"; };
 		3126B82F2C0759370078029A /* Navigation1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigation1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3126B8322C0759370078029A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3126B8342C0759370078029A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				3126B8322C0759370078029A /* AppDelegate.swift */,
 				3126B8342C0759370078029A /* SceneDelegate.swift */,
 				3126B8362C0759370078029A /* ViewController.swift */,
+				312365212DE8B25D005B85F5 /* Dark:Light.swift */,
 			);
 			path = AppDelegate;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 				31C8A7822D1085DF0047CDE2 /* ProfileCoordinator.swift in Sources */,
 				31F84A142CCA8E5200E8C990 /* Checker.swift in Sources */,
 				312D95412CF9322C0092DE01 /* FeedModel.swift in Sources */,
+				312365222DE8B25D005B85F5 /* Dark:Light.swift in Sources */,
 				31BE2B5A2C5E9E5600165C77 /* PostTableViewCell.swift in Sources */,
 				3126B84B2C075E260078029A /* PostViewController.swift in Sources */,
 				318CB92D2CEE5C03004325EA /* CustomButton.swift in Sources */,

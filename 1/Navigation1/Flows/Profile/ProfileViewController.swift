@@ -64,7 +64,7 @@ class ProfileViewController: UIViewController {
     }
 
     private func setupOverlayView() {
-        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        overlayView.backgroundColor = .appBackground
         overlayView.isHidden = true
         view.addSubview(overlayView)
         overlayView.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +78,7 @@ class ProfileViewController: UIViewController {
     
     private func setupCloseButton() {
         closeButton.setImage(UIImage(systemName: "xmark"), for: .normal)
-        closeButton.tintColor = .white
+        closeButton.tintColor = .appText
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         closeButton.alpha = 0.0
         view.addSubview(closeButton)

@@ -9,6 +9,7 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
+    
     var user: User?
 
     private let tableView = UITableView()
@@ -88,11 +89,14 @@ class ProfileViewController: UIViewController {
         
         // алерт
         let alert = UIAlertController(
-            title: "Сессия завершена",
-            message: "Вы были автоматически вышли из системы из-за неактивности",
+            title: NSLocalizedString("session.expired.title", comment: "Session expired"),
+            message: NSLocalizedString("session.expired.message", comment: "Logged out due to inactivity"),
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(
+            title: NSLocalizedString("general.ok", comment: "OK"),
+            style: .default
+        ))
         
         // Показываем алерт на корневом контроллере
         navigationController?.viewControllers.first?.present(alert, animated: true)

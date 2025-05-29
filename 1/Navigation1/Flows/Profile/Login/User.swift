@@ -20,8 +20,9 @@ class User {
         self.status = status
     }
 }
+
 protocol UserService {
-    func getUser (byLogin login: String) -> User?
+    func getUser(byLogin login: String) -> User?
 }
 
 class CurrentUserService: UserService {
@@ -31,12 +32,11 @@ class CurrentUserService: UserService {
         self.user = user
     }
     
-    func getUser (byLogin login: String) -> User? {
-        print("Comparing with user login: \(user.login)") 
+    func getUser(byLogin login: String) -> User? {
+        print(NSLocalizedString("debug.comparingLogin", comment: "Comparing with user login:") + " \(user.login)")
         return login == user.login ? user : nil
     }
 }
-
 
 class TestUserService: UserService {
     private var testUser: User
@@ -44,17 +44,22 @@ class TestUserService: UserService {
     
     init() {
         guard let avatar = UIImage(named: "testAvatar") else {
-            fatalError("Avatar image not found")
+            fatalError(NSLocalizedString("error.avatarNotFound", comment: "Avatar image not found"))
         }
         
-        testUser  = User(login: "testUser", fullName: "Test User", avatar: avatar, status: "Testing")
+        testUser = User(
+            login: NSLocalizedString("testUser.login", comment: "testUser"),
+            fullName: NSLocalizedString("testUser.fullName", comment: "Test User"),
+            avatar: avatar,
+            status: NSLocalizedString("testUser.status", comment: "Testing")
+        )
     }
     
-    func getUser (byLogin login: String) -> User? {
-        return login == testUser .login ? testUser  : nil
+    func getUser(byLogin login: String) -> User? {
+        return login == testUser.login ? testUser : nil
     }
     
     func checkCredentials(login: String, password: String) -> Bool {
-        return login == testUser .login && password == testPassword
+        return login == testUser.login && password == testPassword
     }
 }

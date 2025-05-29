@@ -10,14 +10,6 @@ import UIKit
 class LogInViewController: UIViewController {
     
     var loginDelegate: LoginViewControllerDelegate?
-    private let factory = MyLoginFactory()
-    
-    private let activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .medium)
-        indicator.translatesAutoresizingMaskIntoConstraints = false
-        indicator.hidesWhenStopped = true
-        return indicator
-    }()
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -40,7 +32,7 @@ class LogInViewController: UIViewController {
     
     let emailTextField: UITextField = {
         let emailText = UITextField()
-        emailText.placeholder = NSLocalizedString("email.phone", comment: "login email or phone")
+        emailText.placeholder = "Email or phone"
         emailText.textColor = .black
         emailText.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         emailText.autocapitalizationType = .none
@@ -53,7 +45,7 @@ class LogInViewController: UIViewController {
     
     let passwordTextField: UITextField = {
         let passwordText = UITextField()
-        passwordText.placeholder = NSLocalizedString("password", comment: "login password")
+        passwordText.placeholder = "Password"
         passwordText.textColor = .black
         passwordText.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         passwordText.autocapitalizationType = .none
@@ -91,7 +83,7 @@ class LogInViewController: UIViewController {
     }()
     
     private lazy var logButton: CustomButton = {
-        let button = CustomButton(title: NSLocalizedString("button.login", comment: "button Log in"),
+        let button = CustomButton(title: "Log in",
                                   titleColor: .white,
                                   cornerRadius: 10,
                                   useAutoLayout: false,
@@ -120,47 +112,32 @@ class LogInViewController: UIViewController {
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         
-        activityIndicator.startAnimating()
-        logButton.isEnabled = false
+        if email.isEmpty || password.isEmpty {
+            showAlert(message: "Please enter both email and password")
+            return
+        }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            guard let self = self else { return }
+        if let testUserService = userService as? TestUserService, testUserService.checkCredentials(login: email, password: password) {
+            print("Login check returned: true")
+            print("Attempting to retrieve user with login: (email)")
             
-            do {
-                let success = try self.loginDelegate?.check(login: email, password: password) ?? false
-                
-                if success {
-                    // Для тестового пользователя используем TestUserService
-                    let testUserService = TestUserService()
-                    if let user = testUserService.getUser(byLogin: email) {
-                        let profileViewController = ProfileViewController()
-                        profileViewController.user = user
-                        self.navigationController?.pushViewController(profileViewController, animated: true)
-                    } else {
-                        self.showAlert(message: NSLocalizedString("login.error.userNotFound", comment: "user not found"))
-                    }
-                }
-            } catch let error as LoginError {
-                self.showAlert(message: error.localizedDescription)
-                if error == .tooManyAttempts || error == .accountLocked {
-                    self.logButton.isEnabled = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
-                        self.logButton.isEnabled = true
-                        Checker.shared.resetAttempts()
-                    }
-                }
-            } catch {
-                self.showAlert(message: NSLocalizedString("login.error.unknown", comment: "An unknown error occurred"))
+            if let user = userService.getUser (byLogin: email) {
+                let profileViewController = ProfileViewController()
+                profileViewController.user = user
+                self.navigationController?.pushViewController(profileViewController, animated: true)
+            } else {
+                print("User  not found")
             }
-            
-            self.activityIndicator.stopAnimating()
-            self.logButton.isEnabled = true
+        } else {
+            print("Login check returned: false")
+            showAlert(message: "Invalid login credentials")
         }
     }
     
+    
     private func showAlert(message: String) {
-        let alert = UIAlertController(title: NSLocalizedString("login.error.title", comment: "eror"), message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("login.error.ok", comment: "ok"), style: .default))
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
     
@@ -199,7 +176,6 @@ class LogInViewController: UIViewController {
         let factory = MyLoginFactory()
         loginDelegate = factory.makeLoginInspector()
         
-       
         
         print("Navigation Controller: \(String(describing: self.navigationController))")
         
@@ -212,7 +188,6 @@ class LogInViewController: UIViewController {
         contentView.addSubview(inputStackView)
         contentView.addSubview(separatorView)
         contentView.addSubview(logButton)
-        contentView.addSubview(activityIndicator)
         
         inputStackView.addArrangedSubview(emailTextField)
         inputStackView.addArrangedSubview(passwordTextField)
@@ -228,7 +203,6 @@ class LogInViewController: UIViewController {
         setupConstraints()
         navigationController?.navigationBar.isHidden = true
     }
-    
     @objc func hideKeyboard() {
         view.endEditing(true)
     }
@@ -274,7 +248,6 @@ class LogInViewController: UIViewController {
             logButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logButton.heightAnchor.constraint(equalToConstant: 50),
             logButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
-            
         ])
     }
 }

@@ -23,14 +23,14 @@ class MainCoordinator: MainBaseCoordinator {
     func start() -> UIViewController {
         let profileViewController = profileCoordinator.start()
         profileViewController.tabBarItem = UITabBarItem(
-            title: NSLocalizedString("tab.profile", comment: "Profile tab title") ,
+            title: "Профиль",
             image: UIImage(systemName: "person.circle"),
             tag: 0
         )
 
         let feedViewController = feedCoordinator.start()
         feedViewController.tabBarItem = UITabBarItem(
-            title: NSLocalizedString("tab.feed", comment: "Feed tab title"),
+            title: "Лента",
             image: UIImage(systemName: "doc.richtext"),
             tag: 1
         )

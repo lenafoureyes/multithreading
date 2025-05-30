@@ -98,7 +98,11 @@ class PostTableViewCell: UITableViewCell {
         authorLabel.text = post.author
         descriptionLabel.text = post.description
         postImageView.image = UIImage(named: post.image)
-        likesLabel.text = "Likes: \(post.likes)"
-        viewsLabel.text = "Views: \(post.views)"
+        
+        let likesFormat = NSLocalizedString("post.likes.format", comment: "Likes count format")
+        likesLabel.text = String(format: likesFormat, post.likes)
+        
+        let viewsFormat = NSLocalizedString("post.views.format", comment: "Views count format")
+        viewsLabel.text = String(format: viewsFormat, post.views)
     }
 }

@@ -31,7 +31,7 @@ class PhotosViewController: UIViewController, ImageLibrarySubscriber {
     
     private func setupTitleLabel() {
         let titleLabel = UILabel()
-        titleLabel.text = "Photo Gallery"
+        titleLabel.text = NSLocalizedString("setup.title.photoGallerey", comment: "photo gallerey")
         titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false

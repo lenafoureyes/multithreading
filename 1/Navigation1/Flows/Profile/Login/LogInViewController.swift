@@ -40,7 +40,7 @@ class LogInViewController: UIViewController {
     
     let emailTextField: UITextField = {
         let emailText = UITextField()
-        emailText.placeholder = "Email or phone"
+        emailText.placeholder = NSLocalizedString("email.phone", comment: "login email or phone")
         emailText.textColor = .black
         emailText.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         emailText.autocapitalizationType = .none
@@ -53,7 +53,7 @@ class LogInViewController: UIViewController {
     
     let passwordTextField: UITextField = {
         let passwordText = UITextField()
-        passwordText.placeholder = "Password"
+        passwordText.placeholder = NSLocalizedString("password", comment: "login password")
         passwordText.textColor = .black
         passwordText.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         passwordText.autocapitalizationType = .none
@@ -91,7 +91,7 @@ class LogInViewController: UIViewController {
     }()
     
     private lazy var logButton: CustomButton = {
-        let button = CustomButton(title: "Log in",
+        let button = CustomButton(title: NSLocalizedString("button.login", comment: "button Log in"),
                                   titleColor: .white,
                                   cornerRadius: 10,
                                   useAutoLayout: false,
@@ -137,7 +137,7 @@ class LogInViewController: UIViewController {
                         profileViewController.user = user
                         self.navigationController?.pushViewController(profileViewController, animated: true)
                     } else {
-                        self.showAlert(message: "User not found")
+                        self.showAlert(message: NSLocalizedString("login.error.userNotFound", comment: "user not found"))
                     }
                 }
             } catch let error as LoginError {
@@ -150,7 +150,7 @@ class LogInViewController: UIViewController {
                     }
                 }
             } catch {
-                self.showAlert(message: "An unknown error occurred")
+                self.showAlert(message: NSLocalizedString("login.error.unknown", comment: "An unknown error occurred"))
             }
             
             self.activityIndicator.stopAnimating()
@@ -159,8 +159,8 @@ class LogInViewController: UIViewController {
     }
     
     private func showAlert(message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        let alert = UIAlertController(title: NSLocalizedString("login.error.title", comment: "eror"), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("login.error.ok", comment: "ok"), style: .default))
         present(alert, animated: true)
     }
     

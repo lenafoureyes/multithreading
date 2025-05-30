@@ -23,7 +23,7 @@ class FeedViewController: UIViewController {
     var coordinator: FeedBaseCoordinator?
     
     lazy var playPauseButton: CustomButton = {
-        let button = CustomButton(title: "Play",
+        let button = CustomButton(title: NSLocalizedString("player.play", comment: "Play button title"),
                                  titleColor: .white,
                                  backgroundColor: .systemBlue,
                                  cornerRadius: 12,
@@ -35,7 +35,7 @@ class FeedViewController: UIViewController {
     }()
     
     lazy var stopButton: CustomButton = {
-        let button = CustomButton(title: "Stop",
+        let button = CustomButton(title: NSLocalizedString("player.stop", comment: "Stop button title"),
                                  titleColor: .white,
                                  backgroundColor: .systemRed,
                                  cornerRadius: 12,
@@ -47,7 +47,7 @@ class FeedViewController: UIViewController {
     }()
     
     lazy var nextButton: CustomButton = {
-        let button = CustomButton(title: "Next",
+        let button = CustomButton(title: NSLocalizedString("player.next", comment: "Next button title"),
                                  titleColor: .white,
                                  backgroundColor: .systemGreen,
                                  cornerRadius: 12,
@@ -59,7 +59,7 @@ class FeedViewController: UIViewController {
     }()
     
     lazy var prevButton: CustomButton = {
-        let button = CustomButton(title: "Previous",
+        let button = CustomButton(title:  NSLocalizedString("player.prev", comment: "Previous button title"),
                                  titleColor: .white,
                                  backgroundColor: .systemGreen,
                                  cornerRadius: 12,
@@ -89,7 +89,7 @@ class FeedViewController: UIViewController {
         }()
     
     lazy var checkGuessButton: CustomButton = {
-        let button = CustomButton(title: "Проверить",
+        let button = CustomButton(title: NSLocalizedString("guess.check", comment: "Check guess button title"),
                                  titleColor: .white,
                                  backgroundColor: .brown,
                                  cornerRadius: 4,
@@ -102,7 +102,7 @@ class FeedViewController: UIViewController {
     
     var textField: UITextField = {
         let field = UITextField()
-        field.placeholder = "Введите пароль"
+        field.placeholder = NSLocalizedString("password.placeholder", comment: "Password field placeholder")
         field.textColor = .black
         field.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         field.autocapitalizationType = .none
@@ -133,7 +133,7 @@ class FeedViewController: UIViewController {
     }()
     
     lazy var button1: CustomButton = {
-        let button = CustomButton(title: "Пост 1",
+        let button = CustomButton(title: NSLocalizedString("post.button1", comment: "Post 1 button title"),
                                  titleColor: .white,
                                  backgroundColor: .blue,
                                  cornerRadius: 12,
@@ -145,7 +145,7 @@ class FeedViewController: UIViewController {
     }()
     
     lazy var button2: CustomButton = {
-        let button = CustomButton(title: "Пост 2",
+        let button = CustomButton(title: NSLocalizedString("post.button2", comment: "Post 2 button title"),
                                  titleColor: .white,
                                  backgroundColor: .green,
                                  cornerRadius: 12,
@@ -186,18 +186,18 @@ class FeedViewController: UIViewController {
     }
     
     private func togglePlayPause() {
-        guard let player = player else { return }
-        
-        if player.isPlaying {
-            player.pause()
-            playPauseButton.setTitle("Play", for: .normal)
-            playPauseButton.backgroundColor = .systemBlue
-        } else {
-            player.play()
-            playPauseButton.setTitle("Pause", for: .normal)
-            playPauseButton.backgroundColor = .systemOrange
+            guard let player = player else { return }
+            
+            if player.isPlaying {
+                player.pause()
+                playPauseButton.setTitle(NSLocalizedString("player.play", comment: "Play button title"), for: .normal)
+                playPauseButton.backgroundColor = .systemBlue
+            } else {
+                player.play()
+                playPauseButton.setTitle(NSLocalizedString("player.pause", comment: "Pause button title"), for: .normal)
+                playPauseButton.backgroundColor = .systemOrange
+            }
         }
-    }
     
     private func stopAudio() {
         player?.stop()

@@ -21,14 +21,14 @@ class FeedViewModel {
         switch result {
         case .success:
             isResultCorrect = true
-            resultText = "Верно!"
+            resultText = NSLocalizedString("guess.result.correct", comment: "Correct guess message")
         case .failure(let error):
             isResultCorrect = false
             switch error {
             case .emptyInput:
-                resultText = "Введите слово!"
+                resultText = NSLocalizedString("guess.error.empty", comment: "Empty input error")
             case .incorrectGuess:
-                resultText = "Неверно!"
+                resultText = NSLocalizedString("guess.result.incorrect", comment: "Incorrect guess message")
             }
         }
     }

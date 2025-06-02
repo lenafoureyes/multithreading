@@ -19,18 +19,16 @@ class PostViewController: UIViewController {
         self.view.backgroundColor = .lightGray
         
         if let post = post {
-        title = post.title
+            title = post.title
         }
-        post?.title = "Пост"
+        post?.title = NSLocalizedString("post.default.title", comment: "Default post title")
         
         let myButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(look))
         navigationItem.rightBarButtonItem = myButton
-
-
     }
+    
     @objc func look() {
         let infoViewController = InfoViewController()
         self.navigationController?.present(infoViewController, animated: true)
     }
-
 }

@@ -11,6 +11,14 @@ class LogInViewController: UIViewController {
     
     var loginDelegate: LoginViewControllerDelegate?
     private let factory = MyLoginFactory()
+    private let authService = LocalAuthorizationService()
+    
+    private lazy var biometryButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(handleBiometryAuth), for: .touchUpInside)
+        return button
+    }()
     
     private let activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .medium)
@@ -40,7 +48,7 @@ class LogInViewController: UIViewController {
     
     let emailTextField: UITextField = {
         let emailText = UITextField()
-        emailText.placeholder = "Email or phone"
+        emailText.placeholder = NSLocalizedString("email.phone", comment: "login email or phone")
         emailText.textColor = .black
         emailText.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         emailText.autocapitalizationType = .none
@@ -53,7 +61,7 @@ class LogInViewController: UIViewController {
     
     let passwordTextField: UITextField = {
         let passwordText = UITextField()
-        passwordText.placeholder = "Password"
+        passwordText.placeholder = NSLocalizedString("password", comment: "login password")
         passwordText.textColor = .black
         passwordText.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         passwordText.autocapitalizationType = .none
@@ -91,7 +99,7 @@ class LogInViewController: UIViewController {
     }()
     
     private lazy var logButton: CustomButton = {
-        let button = CustomButton(title: "Log in",
+        let button = CustomButton(title: NSLocalizedString("button.login", comment: "button Log in"),
                                   titleColor: .white,
                                   cornerRadius: 10,
                                   useAutoLayout: false,
@@ -113,7 +121,6 @@ class LogInViewController: UIViewController {
         button.addTarget(self, action: #selector(buttonDisabled(_:)), for: .touchDragExit)
         
         return button
-        
     }()
     
     @objc private func logButtonTapped() {
@@ -137,7 +144,7 @@ class LogInViewController: UIViewController {
                         profileViewController.user = user
                         self.navigationController?.pushViewController(profileViewController, animated: true)
                     } else {
-                        self.showAlert(message: "User not found")
+                        self.showAlert(message: NSLocalizedString("login.error.userNotFound", comment: "user not found"))
                     }
                 }
             } catch let error as LoginError {
@@ -150,7 +157,7 @@ class LogInViewController: UIViewController {
                     }
                 }
             } catch {
-                self.showAlert(message: "An unknown error occurred")
+                self.showAlert(message: NSLocalizedString("login.error.unknown", comment: "An unknown error occurred"))
             }
             
             self.activityIndicator.stopAnimating()
@@ -159,8 +166,8 @@ class LogInViewController: UIViewController {
     }
     
     private func showAlert(message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        let alert = UIAlertController(title: NSLocalizedString("login.error.title", comment: "eror"), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("login.error.ok", comment: "ok"), style: .default))
         present(alert, animated: true)
     }
     
@@ -194,12 +201,11 @@ class LogInViewController: UIViewController {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let factory = MyLoginFactory()
         loginDelegate = factory.makeLoginInspector()
-        
-       
         
         print("Navigation Controller: \(String(describing: self.navigationController))")
         
@@ -213,6 +219,7 @@ class LogInViewController: UIViewController {
         contentView.addSubview(separatorView)
         contentView.addSubview(logButton)
         contentView.addSubview(activityIndicator)
+        contentView.addSubview(biometryButton)
         
         inputStackView.addArrangedSubview(emailTextField)
         inputStackView.addArrangedSubview(passwordTextField)
@@ -226,7 +233,77 @@ class LogInViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
         
         setupConstraints()
+        configureBiometryButton()
         navigationController?.navigationBar.isHidden = true
+    }
+    
+    private func configureBiometryButton() {
+        var configuration = UIButton.Configuration.filled()
+        
+        switch authService.availableBiometryType {
+        case .faceID:
+            configuration.image = UIImage(systemName: "faceid")
+            configuration.title = " Войти с Face ID"
+        case .touchID:
+            configuration.image = UIImage(systemName: "touchid")
+            configuration.title = " Войти с Touch ID"
+        default:
+            biometryButton.isHidden = true
+            return
+        }
+        
+        configuration.imagePadding = 8
+        configuration.baseBackgroundColor = .systemBlue
+        configuration.baseForegroundColor = .white
+        
+        biometryButton.configuration = configuration
+        biometryButton.isHidden = false
+    }
+    
+    @objc private func handleBiometryAuth() {
+        authService.authorizeIfPossible { [weak self] success, error in
+            if success {
+                // Авторизация успешна - выполняем вход
+                self?.performLoginWithBiometry()
+            } else if let error = error {
+                self?.showBiometryError(error)
+            }
+        }
+    }
+    
+    private func performLoginWithBiometry() {
+        // Здесь можно использовать тестовые учетные данные или хранить их в Keychain
+        let testLogin = "testUser"
+        let testPassword = "123"
+        
+        emailTextField.text = testLogin
+        passwordTextField.text = testPassword
+        
+        // Имитируем нажатие кнопки входа
+        logButtonTapped()
+    }
+    
+    private func showBiometryError(_ error: AuthorizationError) {
+        let alert = UIAlertController(
+            title: "Ошибка биометрии",
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
+        
+        if case .biometryNotEnrolled = error {
+            alert.addAction(UIAlertAction(
+                title: "Настройки",
+                style: .default,
+                handler: { _ in
+                    if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(settingsURL)
+                    }
+                }
+            ))
+        }
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
     
     @objc func hideKeyboard() {
@@ -273,9 +350,15 @@ class LogInViewController: UIViewController {
             logButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logButton.heightAnchor.constraint(equalToConstant: 50),
-            logButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
             
+            biometryButton.topAnchor.constraint(equalTo: logButton.bottomAnchor, constant: 16),
+            biometryButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            biometryButton.widthAnchor.constraint(equalToConstant: 200),
+            biometryButton.heightAnchor.constraint(equalToConstant: 44),
+            biometryButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: logButton.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: logButton.centerYAnchor)
         ])
     }
 }
-

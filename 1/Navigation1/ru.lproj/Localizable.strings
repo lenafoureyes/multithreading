@@ -1,0 +1,55 @@
+/* 
+  Localizable.strings
+  Navigation1
+
+  Created by Елена Хайрова on 30.05.2025.
+  
+*/
+"tab.profile" = "Профиль";
+"tab.feed" = "Лента";
+"email.phone" = "Почта или телефон";
+"password" = "пароль";
+"button.login" = "Войти";
+"login.error.title" = "Ошибка";
+"login.error.ok" = "OK";
+"login.error.userNotFound" = "Пользователь не найден";
+"login.error.unknown" = "Неизвестная ошибка";
+"error.emptyCredentials" = "Пожалуйста, введите логин и пароль";
+"error.invalidLogin" = "Некорректный логин";
+"error.wrongPassword" = "Неверный пароль";
+"error.credentialsMismatch" = "Логин и пароль не совпадают";
+"error.accountLocked" = "Аккаунт временно заблокирован";
+"error.tooManyAttempts" = "Слишком много попыток. Попробуйте позже";
+"debug.comparingLogin" = "Сравнение с логином пользователя:";
+"error.avatarNotFound" = "Аватар не найден";
+"testUser.login" = "тестовыйПользователь";
+"testUser.fullName" = "Тестовый Пользователь";
+"testUser.status" = "Тестирование";
+"description" = "мяу";
+"button.push" = "нажми меня";
+"photos.label" = "Фото";
+"session.expired.title" = "Сессия завершена";
+"session.expired.message" = "Вы были автоматически вышли из системы из-за неактивности";
+"general.ok" = "OK";
+"setup.title.photoGallerey" = "Фото Галерея";
+"post.likes.format" = "Лайки: %d";
+"post.views.format" = "Просмотры: %d";
+"delete.button.title" = "удалить";
+"alert.confirm.title" = "вы уверенны ?";
+"alert.confirm.message" = "Are you sure?";
+"alert.yes" = "Да";
+"alert.no" = "Нет";
+"player.play" = "Play";
+"player.pause" = "Pause";
+"player.stop" = "Stop";
+"player.next" = "Next";
+"player.prev" = "Previous";
+"guess.check" = "Проверить";
+"password.placeholder" = "Введите пароль";
+"post.button1" = "Пост 1";
+"post.button2" = "Пост 2";
+"guess.result.correct" = "Верно!";
+"guess.error.empty" = "Введите слово!";
+"guess.result.incorrect" = "Неверно!";
+"post.default.title" = "Пост";
+

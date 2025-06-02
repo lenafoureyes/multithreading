@@ -17,19 +17,12 @@ class ProfileViewController: UIViewController {
     private let closeButton = UIButton()
     private var avatarImageView: UIImageView?
     
-    private var inactivityTimer: Timer?
-    private let inactivityTimeout: TimeInterval = 10
-    
-    
     override func viewDidLoad() {
      super.viewDidLoad()
         
         setupTableView()
         setupOverlayView()
         setupCloseButton()
-        
-        setupActivityMonitoring()
-        resetInactivityTimer()
         
         headerView = ProfileHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 400))
         headerView?.navigationController = self.navigationController
@@ -45,14 +38,8 @@ class ProfileViewController: UIViewController {
         
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        inactivityTimer?.invalidate()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        resetInactivityTimer()
         
         #if DEBUG
             tableView.backgroundColor = .red
@@ -60,44 +47,7 @@ class ProfileViewController: UIViewController {
             tableView.backgroundColor = .white
         #endif
     }
-    
-    private func setupActivityMonitoring() {
-        // Отслеживаем любые касания
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(resetInactivityTimer))
-        view.addGestureRecognizer(tapGesture)
-        
-        // Отслеживаем скроллинг таблицы
-        tableView.panGestureRecognizer.addTarget(self, action: #selector(resetInactivityTimer))
-    }
-    
-    @objc private func resetInactivityTimer() {
-        // Сбрасываем таймер при любой активности
-        inactivityTimer?.invalidate()
-        inactivityTimer = Timer.scheduledTimer(
-            timeInterval: inactivityTimeout,
-            target: self,
-            selector: #selector(logoutDueToInactivity),
-            userInfo: nil,
-            repeats: false
-        )
-    }
-    
-    @objc private func logoutDueToInactivity() {
-        // Возвращаемся на корневой контроллер (экран логина)
-        navigationController?.popToRootViewController(animated: true)
-        
-        // алерт
-        let alert = UIAlertController(
-            title: "Сессия завершена",
-            message: "Вы были автоматически вышли из системы из-за неактивности",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        
-        // Показываем алерт на корневом контроллере
-        navigationController?.viewControllers.first?.present(alert, animated: true)
-    }
-    
+
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
